@@ -57,6 +57,28 @@ class AuthEvent:
 
 
 @dataclass
+class WebEvent:
+
+    timestamp: datetime
+    source_ip: str
+    method: str
+    path: str
+    query: str
+    status: int
+    bytes: int
+    user_agent: str
+    referer: str
+    protocol: str
+    raw: str
+
+    @property
+    def target(self) -> str:
+        if self.query:
+            return f"{self.path}?{self.query}"
+        return self.path
+
+
+@dataclass
 class Alert:
 
     severity: Severity
@@ -67,6 +89,7 @@ class Alert:
     first_seen: datetime
     last_seen: datetime
     usernames: list[str] = field(default_factory=list)
+    evidence: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
@@ -78,4 +101,5 @@ class Alert:
             "first_seen": self.first_seen.isoformat(),
             "last_seen": self.last_seen.isoformat(),
             "usernames": self.usernames,
+            "evidence": self.evidence,
         }

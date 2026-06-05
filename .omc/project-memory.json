@@ -1,0 +1,113 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1780693546821,
+  "projectRoot": "/home/kali/Рабочий стол/pentest progect /SOC_util",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "sample_logs": {
+      "path": "sample_logs",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1780693546817,
+      "keyFiles": [
+        "auth.log",
+        "ddos.log"
+      ]
+    },
+    "socscan": {
+      "path": "socscan",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1780693546818,
+      "keyFiles": [
+        "__init__.py",
+        "detectors.py",
+        "models.py",
+        "parser.py",
+        "reporter.py"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "README.md",
+      "accessCount": 6,
+      "lastAccessed": 1780694091640,
+      "type": "file"
+    },
+    {
+      "path": "socscan/models.py",
+      "accessCount": 4,
+      "lastAccessed": 1780693806911,
+      "type": "file"
+    },
+    {
+      "path": "socscan/reporter.py",
+      "accessCount": 3,
+      "lastAccessed": 1780693886162,
+      "type": "file"
+    },
+    {
+      "path": "soc_scan.py",
+      "accessCount": 3,
+      "lastAccessed": 1780693925588,
+      "type": "file"
+    },
+    {
+      "path": "socscan/webparser.py",
+      "accessCount": 3,
+      "lastAccessed": 1780693982276,
+      "type": "file"
+    },
+    {
+      "path": "socscan/parser.py",
+      "accessCount": 1,
+      "lastAccessed": 1780693631092,
+      "type": "file"
+    },
+    {
+      "path": "socscan/detectors.py",
+      "accessCount": 1,
+      "lastAccessed": 1780693631570,
+      "type": "file"
+    },
+    {
+      "path": "socscan/webdetectors.py",
+      "accessCount": 1,
+      "lastAccessed": 1780693858613,
+      "type": "file"
+    },
+    {
+      "path": "sample_logs/access.log",
+      "accessCount": 1,
+      "lastAccessed": 1780693956907,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

@@ -1,9 +1,10 @@
 # SOC_util
 
-A lightweight SOC utility that scans Linux `auth.log` files for brute-force
-attacks, credential compromise, and reconnaissance activity. It parses raw
-syslog records into normalized events, runs time-window detection heuristics,
-and produces either a human-readable report or JSON for downstream tooling.
+A lightweight SOC utility that scans Linux `auth.log` files **and web server
+(nginx/apache) access logs** for suspicious activity. It auto-detects the log
+format, parses raw records into normalized events, runs time-window detection
+heuristics, and produces either a human-readable report or JSON for downstream
+tooling.
 
 ![python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![dependencies](https://img.shields.io/badge/dependencies-stdlib%20only-green)
@@ -22,6 +23,13 @@ and produces either a human-readable report or JSON for downstream tooling.
   attempts, most-targeted accounts, and per-type counts.
 - **Broad parsing** — failed/accepted passwords, invalid users, sudo commands,
   pre-auth disconnects, and "too many authentication failures" events.
+- **Web attack detection** — for nginx/apache access logs: SQL injection, XSS and
+  command injection signatures, path traversal / LFI and sensitive-path access
+  (`.env`, `.git`, `wp-login`, `phpmyadmin`...), scanner / suspicious user-agents
+  (sqlmap, nikto, gobuster...), and traffic anomalies (directory enumeration via
+  bursts of distinct 404s, 5xx spikes, and request floods).
+- **Auto format detection** — auth.log vs web access log is detected from the
+  content; override with `--format auth|web` if needed.
 - **Flexible input** — multiple files, gzip-compressed logs, or stdin.
 - **Two output modes** — aligned console report or machine-readable JSON.
 - **No dependencies** — pure Python standard library, Python 3.10+.
@@ -51,6 +59,8 @@ python soc_scan.py sample_logs/auth.log
 python soc_scan.py /var/log/auth.log /var/log/auth.log.1.gz
 python soc_scan.py sample_logs/auth.log --json
 python soc_scan.py sample_logs/ddos.log
+python soc_scan.py sample_logs/access.log
+python soc_scan.py /var/log/nginx/access.log --format web
 cat /var/log/auth.log | python soc_scan.py -
 ```
 
@@ -58,10 +68,13 @@ Options:
 
 | Flag | Default | Description |
 | --- | --- | --- |
+| `--format MODE` | auto | Log format: `auto`, `auth`, or `web` |
 | `--threshold N` | 5 | Failed attempts from one IP to flag as brute force |
 | `--window SECONDS` | 60 | Detection time window |
 | `--ddos-rate N` | 40 | Connection events in the window to flag a flood |
 | `--ddos-ips N` | 15 | Distinct source IPs in the window to flag it as distributed |
+| `--web-errors N` | 15 | Distinct 404 paths or 5xx errors from one IP to flag |
+| `--web-flood N` | 100 | Requests from one IP in the window to flag a request flood |
 | `--json` | off | Emit JSON instead of the console report |
 | `--year YEAR` | current | Year assumed for syslog timestamps (which omit it) |
 
@@ -104,25 +117,45 @@ Alerts (2)
   with how far the peak exceeds the thresholds, and the description states whether
   the traffic is concentrated or distributed.
 
+### Web logs (nginx/apache)
+
+When a web access log is detected, requests are normalized (IP, method, decoded
+path + query, status, user-agent) and run through four detectors, each grouping
+hits per source IP and attaching example requests as `evidence`:
+
+- **Injection**: signature matching for SQL injection (`UNION SELECT`, `OR 1=1`,
+  `information_schema`, time-based `SLEEP()`/`BENCHMARK()`), XSS (`<script>`,
+  `onerror=`, `javascript:`), and command injection (`;cat`, `$(...)`, `|sh`).
+- **Path abuse**: directory traversal / LFI (`../`, `/etc/passwd`, `php://`) and
+  access to sensitive paths (`.env`, `.git`, `wp-login`, `phpmyadmin`, `.sql`/`.bak`).
+- **Scanners**: known offensive-tool and suspicious user-agents (sqlmap, nikto,
+  nmap, gobuster, masscan, `python-requests`, empty UA).
+- **Traffic anomalies**: directory/file enumeration (≥ `--web-errors` distinct 404
+  paths from one IP), 5xx error spikes, and request floods (≥ `--web-flood`
+  requests within `--window` seconds).
+
 ## Project structure
 
 ```
 SOC_util/
-├── soc_scan.py          CLI entry point
+├── soc_scan.py          CLI entry point and format dispatcher
 ├── socscan/
-│   ├── models.py        AuthEvent, Alert, EventType, Severity
-│   ├── parser.py        line parsing and file/stdin/gzip reading
+│   ├── models.py        AuthEvent, WebEvent, Alert, EventType, Severity
+│   ├── parser.py        auth.log line parsing and file/stdin/gzip reading
 │   ├── detectors.py     brute-force, compromise, DDoS, statistics
-│   └── reporter.py      console and JSON rendering
+│   ├── webparser.py     web access log parsing and format auto-detection
+│   ├── webdetectors.py  injection, path abuse, scanner, anomaly detection
+│   └── reporter.py      console and JSON rendering (auth and web)
 └── sample_logs/
     ├── auth.log         demo data with a brute-force-then-compromise scenario
-    └── ddos.log         demo data with a distributed connection flood
+    ├── ddos.log         demo data with a distributed connection flood
+    └── access.log       demo data with web attacks (SQLi, traversal, scanners)
 ```
 
 ## Roadmap
 
 - Optional GeoIP/ASN enrichment for source IPs.
-- Support for additional log formats (journald JSON, web server logs).
+- Support for additional log formats (journald JSON).
 - Allowlist for known automation hosts to reduce noise.
 
 ## License
