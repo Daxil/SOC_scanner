@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"/home/kali/Рабочий стол/pentest progect /SOC_util\\\" && python -c \\\"import socscan; print('import OK, version', socscan.__version__)\\\" && python soc_scan.py sample_logs/access.log >/de...",
+  "error": "Exit code 1\nimport OK, version 1.1.0",
+  "timestamp": "2026-06-06T08:48:22.194Z",
+  "retry_count": 1
+}

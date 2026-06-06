@@ -56,8 +56,8 @@
   "hotPaths": [
     {
       "path": "README.md",
-      "accessCount": 6,
-      "lastAccessed": 1780694091640,
+      "accessCount": 11,
+      "lastAccessed": 1780735912351,
       "type": "file"
     },
     {
@@ -82,6 +82,12 @@
       "path": "socscan/webparser.py",
       "accessCount": 3,
       "lastAccessed": 1780693982276,
+      "type": "file"
+    },
+    {
+      "path": "socscan/__init__.py",
+      "accessCount": 2,
+      "lastAccessed": 1780735689345,
       "type": "file"
     },
     {

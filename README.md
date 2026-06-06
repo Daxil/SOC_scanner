@@ -8,7 +8,6 @@ tooling.
 
 ![python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![dependencies](https://img.shields.io/badge/dependencies-stdlib%20only-green)
-![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ## Features
 
@@ -37,17 +36,20 @@ tooling.
 ## How it works
 
 ```
-log files / stdin  ->  parser  ->  AuthEvent stream  ->  detectors  ->  reporter
-   (.log, .gz)         regex        (normalized)       brute force /     console
-                                                        compromise /      or JSON
-                                                        statistics
+                          /-- auth.log --> AuthEvent stream --> auth detectors --\
+log files / stdin --> sniff                                                       >--> reporter
+   (.log, .gz)            \-- access.log -> WebEvent stream --> web detectors  --/     console / JSON
 ```
+
+The format sniffer inspects the first lines and routes the stream to the auth
+pipeline (brute-force / compromise / DDoS) or the web pipeline (injection / path
+abuse / scanners / traffic anomalies). Use `--format` to force a mode.
 
 ## Installation
 
 ```bash
-git clone https://github.com/<your-username>/SOC_util.git
-cd SOC_util
+git clone https://github.com/Daxil/SOC_scanner.git
+cd SOC_scanner
 ```
 
 No installation step is required. Python 3.10 or newer is the only prerequisite.
@@ -157,7 +159,3 @@ SOC_util/
 - Optional GeoIP/ASN enrichment for source IPs.
 - Support for additional log formats (journald JSON).
 - Allowlist for known automation hosts to reduce noise.
-
-## License
-
-Released under the MIT License.
